@@ -1,8 +1,21 @@
 import {db} from "@/db";
 
 export async function GET() {
-    return new Response('hello world', {status: 200});
-
+    try{
+        const data = await db.blog.findMany({
+            take:10,
+            select:{
+                title:true,
+                category:true,
+                slug:true
+            },
+            orderBy:[{view_count:"desc"}]
+        })
+        return Response.json(data)
+    }catch(err){
+        console.log(err)
+        throw Error("失败")
+    }
 }
 
 export async function POST(req: Request) {

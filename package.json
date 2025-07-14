@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "postinstall":"prisma generate",
+    "postinstall": "prisma generate",
     "start": "next start",
     "lint": "next lint"
   },
@@ -24,6 +24,7 @@
     "react": "^18",
     "react-dom": "^18",
     "sugar-high": "^0.9.3",
+    "swr": "^2.3.4",
     "tailwind-merge": "^3.3.0",
     "tailwindcss-animate": "^1.0.7"
   },

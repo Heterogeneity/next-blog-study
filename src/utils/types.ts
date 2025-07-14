@@ -3,3 +3,9 @@ export interface reportView {
     title: string | undefined
     category: string | undefined
 }
+
+export type responseData = {
+    category: string
+    title: string
+    slug: string
+}[];

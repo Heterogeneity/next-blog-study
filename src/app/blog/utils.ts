@@ -48,7 +48,7 @@ export function formatDate(date: string, includeRelative = true) {
     } else if (daysAgo > 0) {
         formattedDate = `${daysAgo}天前`
     } else {
-        formattedDate = "Today"
+        formattedDate = "今日"
     }
     let fullDate = targetDate.toLocaleDateString(undefined, {
         weekday: "long",

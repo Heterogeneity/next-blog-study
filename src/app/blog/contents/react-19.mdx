@@ -2,18 +2,18 @@
 title: "React 19 RC"
 publishedAt: "2024-06-26"
 summary: "在这篇文章中，我们将概述 React 19 的新特性，以及如何采用这些特性。"
-category: "react"
+category: "React"
 ---
 
-In our React 19 RC Upgrade Guide, we shared step-by-step instructions for upgrading your app to React 19. In this post, we’ll give an overview of the new features in React 19, and how you can adopt them.
+在我们的 React 19 RC 升级指南中，我们分享了将应用升级到 React 19 的详细步骤。在这篇文章中，我们将概述 React 19 的新特性，以及如何采用这些特性。
 
-## What&#39;s new in React 19
+## React 19 的新特性
 
 ### Actions
 
-A common use case in React apps is to perform a data mutation and then update state in response. For example, when a user submits a form to change their name, you will make an API request, and then handle the response. In the past, you would need to handle pending states, errors, optimistic updates, and sequential requests manually.
+React 应用中的一个常见用例是执行数据变更，然后根据响应更新状态。例如，当用户提交表单更改他们的姓名时，你会发送一个 API 请求，然后处理响应。在过去，你需要手动处理待处理状态、错误、乐观更新和连续请求。
 
-For example, you could handle the pending and error state in `useState`:
+例如，你可以在 `useState` 中处理待处理和错误状态：
 
 ```js
 // Before Actions
@@ -45,9 +45,9 @@ function UpdateName({}) {
 }
 ```
 
-In React 19, we’re adding support for using async functions in transitions to handle pending states, errors, forms, and optimistic updates automatically.
+在 React 19 中，我们添加了在过渡中使用异步函数的支持，以自动处理待处理状态、错误、表单和乐观更新。
 
-For example, you can use `useTransition` to handle the pending state for you:
+例如，你可以使用 `useTransition` 来处理待处理状态：
 
 ```js
 // Using pending state from Actions
@@ -79,21 +79,21 @@ function UpdateName({}) {
 }
 ```
 
-The async transition will immediately set the `isPending` state to true, make the async request(s), and switch `isPending` to false after any transitions. This allows you to keep the current UI responsive and interactive while the data is changing.
+异步过渡将立即将 `isPending` 状态设置为 true，发送异步请求，并在任何过渡之后将 `isPending` 切换为 false。这使你能够在数据变化时保持当前 UI 的响应性和交互性。
 
-> ### Note
+> ### 注意
 >
-> By convention, functions that use async transitions are called “Actions”. Actions
-> automatically manage submitting data for you:
+> 按照惯例，使用异步过渡的函数被称为"Actions"。Actions
+> 自动为你管理数据提交：
 >
-> - Pending state: Actions provide a pending state that starts at the beginning of a request and automatically resets when the final state update is committed.
-> - Optimistic updates: Actions support the new `useOptimistic` hook so you can show users instant feedback while the requests are submitting.
-> - Error handling: Actions provide error handling so you can display Error Boundaries when a request fails, and revert optimistic updates to their original value automatically.
-> - Forms: `<form>` elements now support passing functions to the `action` and `formAction` props. Passing functions to the `action` props use Actions by default and reset the form automatically after submission.
+> - 待处理状态：Actions 提供一个待处理状态，从请求开始时启动，并在最终状态更新提交后自动重置。
+> - 乐观更新：Actions 支持新的 `useOptimistic` 钩子，这样你可以在请求提交时向用户展示即时反馈。
+> - 错误处理：Actions 提供错误处理，因此你可以在请求失败时显示错误边界，并自动将乐观更新恢复到原始值。
+> - 表单：`<form>` 元素现在支持将函数传递给 `action` 和 `formAction` 属性。将函数传递给 `action` 属性默认使用 Actions，并在提交后自动重置表单。
 
-Building on top of Actions, React 19 introduces `useOptimistic` to manage optimistic updates, and a new hook `React.useActionState` to handle common cases for Actions. In react-dom we’re adding `<form>` `Actions` to manage forms automatically and `useFormStatus` to support the common cases for Actions in forms.
+在 Actions 的基础上，React 19 引入了 `useOptimistic` 来管理乐观更新，以及一个新的钩子 `React.useActionState` 来处理 Actions 的常见情况。在 react-dom 中，我们添加了 `<form>` `Actions` 来自动管理表单，以及 `useFormStatus` 来支持表单 Actions 中的常见情况。
 
-In React 19, the above example can be simplified to:
+在 React 19 中，上述示例可以简化为：
 
 ```js
 // Using <form> Actions and useActionState
@@ -122,32 +122,32 @@ function ChangeName({ name, setName }) {
 }
 ```
 
-In the next section, we’ll break down each of the new Action features in React 19.
+在下一节中，我们将分解 React 19 中每个新的 Action 特性。
 
-## New hook: `useActionState`
+## 新钩子：`useActionState`
 
-To make the common cases easier for Actions, we’ve added a new hook called `useActionState`:
+为了使 Actions 的常见情况更加简单，我们添加了一个名为 `useActionState` 的新钩子：
 
 ```js
 const [error, submitAction, isPending] = useActionState(
   async (previousState, newName) => {
     const error = await updateName(newName);
     if (error) {
-      // You can return any result of the action.
-      // Here, we return only the error.
+      // 你可以返回 action 的任何结果。
+      // 这里，我们只返回错误。
       return error;
     }
 
-    // handle success
+    // 处理成功
     return null;
   },
   null
 );
 ```
 
-`useActionState` accepts a function (the “Action”), and returns a wrapped Action to call. This works because Actions compose. When the wrapped Action is called, `useActionState` will return the last result of the Action as `data`, and the pending state of the Action as `pending`.
+`useActionState` 接受一个函数（"Action"），并返回一个要调用的包装 Action。这是可行的，因为 Actions 是可组合的。当调用包装的 Action 时，`useActionState` 将返回 Action 的最后一个结果作为 `data`，以及 Action 的待处理状态作为 `pending`。
 
-> ### Note
+> ### 注意
 >
-> `React.useActionState` was previously called `ReactDOM.useFormState` in the Canary
-> releases, but we&#39;ve renamed it and deprecated `useFormState`.{" "}
+> `React.useActionState` 在 Canary 发布版本中之前被称为 `ReactDOM.useFormState`，
+> 但我们已经重命名它并弃用了 `useFormState`。{" "}
