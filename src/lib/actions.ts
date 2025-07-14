@@ -4,6 +4,8 @@ import {State} from "@/utils/types";
 import {db} from "@/db";
 import {revalidatePath} from "next/cache";
 
+
+
 const FormSchema = z.object({
     id: z.number(),
     email: z.string().min(1, {message: "已订阅"}),
@@ -31,7 +33,10 @@ export async function createSubscriber(prevState: State, formData: FormData) {
         })
         revalidatePath('/')
         return {message: '感谢订阅！'}
-    } catch (err) {
-        console.log(err)
+    } catch (err:any) {
+           if(err.code==='P2002'){
+               return {message:"错误：已订阅！"}
+           }
+       return {message:'数据库错误！'}
     }
 }
