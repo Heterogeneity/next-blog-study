@@ -9,3 +9,10 @@ export type responseData = {
     title: string
     slug: string
 }[];
+
+export type State = {
+    errors?: {
+        email?: string[]
+    }
+    message?: string | null
+}

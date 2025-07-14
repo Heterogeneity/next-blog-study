@@ -8,7 +8,6 @@ import Link from "next/link";
 import PopularPostSkeleton from '@/components/skeleton/popular_posts_skeleton'
 
 export default function PopularPosts() {
-    console.log(process.env.NODE_ENV,fetchUrl);
     const {data, error, isLoading} = useSWR(fetchUrl, fetcher)
     if (error) return <div>加载失败</div>
     if (isLoading) return <PopularPostSkeleton/>

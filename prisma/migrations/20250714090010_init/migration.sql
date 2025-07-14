@@ -21,3 +21,6 @@ CREATE TABLE "Subscriber" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Blog_slug_key" ON "Blog"("slug");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Subscriber_email_key" ON "Subscriber"("email");
